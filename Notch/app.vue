@@ -3,8 +3,12 @@
     <!-- Global Header or Navigation -->
     <header>
       <nav>
-        <NuxtLink to="/">Home</NuxtLink> |
-        <NuxtLink to="/employees/add">Add Employee</NuxtLink>
+      <NuxtLink to="/">Home</NuxtLink> |
+      <NuxtLink to="/employees">Employees</NuxtLink> |
+      <NuxtLink to="/departments">Departments</NuxtLink> |
+      <NuxtLink to="/attendance">Attendance</NuxtLink> |
+      <NuxtLink to="/salaries">Salaries</NuxtLink> |
+      <NuxtLink to="/job-performance">Job Performance</NuxtLink>
       </nav>
     </header>
 

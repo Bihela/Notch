@@ -1,13 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 
-export default defineNuxtPlugin(() => {
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/api', // Replace with your backend API URL
-  })
+export default defineNuxtPlugin((nuxtApp) => {
+  const api = axios.create({
+    baseURL: 'https://localhost:7065/api', // Your API base URL
+  });
 
-  return {
-    provide: {
-      axios: axiosInstance,
-    },
-  }
-})
+  nuxtApp.provide('axios', api);
+});
