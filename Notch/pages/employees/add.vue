@@ -6,5 +6,7 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import EmployeeForm from '~/components/EmployeeForm.vue'
+const router = useRouter()
 </script>

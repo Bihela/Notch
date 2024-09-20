@@ -34,7 +34,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const { $axios } = useNuxtApp()
+const router = useRouter()
 
 const employee = ref({
   id: null,
@@ -48,33 +50,15 @@ const employee = ref({
 
 const submitForm = async () => {
   try {
-    // Debug: Log the employee object before sending it to the API
-    console.log('Submitting employee data:', JSON.stringify(employee.value, null, 2))
-
     const url = '/api/employee'
 
-    console.log(`Request URL: ${url}`)
-
-    // Use POST for both create and update
-    console.log('Submitting data...')
+    // Submitting the employee data to the API
     const response = await $axios.post(url, employee.value)
-    console.log('Response:', response.data)
-
-    // Optionally, redirect to employee list or clear form after submission
-    console.log('Submission successful. Redirecting or clearing form...')
+    
+    // After successful submission, redirect to the employee list page
+    router.push('/employees')
   } catch (error) {
-    // Debug: Log any error that occurs during API call
     console.error('Failed to submit employee:', error)
-
-    if (error.response) {
-      console.error('Response data:', error.response.data)
-      console.error('Response status:', error.response.status)
-      console.error('Response headers:', error.response.headers)
-    } else if (error.request) {
-      console.error('Request data:', error.request)
-    } else {
-      console.error('Error message:', error.message)
-    }
   }
 }
 </script>

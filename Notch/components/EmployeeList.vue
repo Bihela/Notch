@@ -14,7 +14,7 @@ const employees = ref([])
 
 onMounted(async () => {
   try {
-    const response = await $axios.get('/employees')
+    const response = await $axios.get('/api/Employee')
     employees.value = response.data
   } catch (error) {
     console.error('Failed to fetch employees:', error)

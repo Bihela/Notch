@@ -16,9 +16,17 @@ const { $axios } = useNuxtApp()
 
 const employees = ref([])
 
-onMounted(async () => {
-  const response = await $axios.get('/employees')
-  employees.value = response.data
+const fetchEmployees = async () => {
+  try {
+    const response = await $axios.get('/api/Employee')
+    employees.value = response.data
+  } catch (error) {
+    console.error('Failed to fetch employees:', error)
+  }
+}
+
+onMounted(() => {
+  fetchEmployees()
 })
 </script>
 
