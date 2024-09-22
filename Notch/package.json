@@ -7,11 +7,18 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint ."
   },
   "dependencies": {
     "axios": "^1.7.7",
     "nuxt": "^3.13.2",
     "vue": "latest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.0",
+    "eslint": "^9.11.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "globals": "^15.9.0"
   }
 }
