@@ -1,27 +1,34 @@
 <template>
-  <ul>
-    <li v-for="department in departments" :key="department.id">
-      <NuxtLink :to="`/departments/${department.id}`">{{ department.name }}</NuxtLink>
-    </li>
-  </ul>
+  <div class="department-list">
+    <!-- Department Table -->
+    <table class="department-table">
+      <thead>
+        <tr>
+          <th>Department Name</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="department in departments" :key="department.id">
+          <td>{{ department.name }}</td>
+          <td>
+            <NuxtLink :to="`/departments/${department.id}`">View Details</NuxtLink>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 const { $axios } = useNuxtApp()
 
-// Define the departments ref
 const departments = ref([])
 
-// Fetch departments from the API
-const fetchDepartments = async () => {
+onMounted(async () => {
   try {
     const response = await $axios.get('/api/Department')
-    
-    // Log the response data to inspect it
-    console.log('API Response:', response.data)
-    
-    // Extract department names based on the correct key
     departments.value = response.data.map(department => ({
       id: department.departmentId,
       name: department.departmentName
@@ -29,10 +36,38 @@ const fetchDepartments = async () => {
   } catch (error) {
     console.error('Failed to fetch departments:', error)
   }
-}
-
-// Call the fetch function on component mount
-onMounted(() => {
-  fetchDepartments()
 })
 </script>
+
+<style scoped>
+/* Table styling */
+.department-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.department-table th, .department-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+.department-table th {
+  background-color: #f2f2f2;
+}
+
+.department-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.department-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+  .department-table th, .department-table td {
+    padding: 10px 5px;
+  }
+}
+</style>
