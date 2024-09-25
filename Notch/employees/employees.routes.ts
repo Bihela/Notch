@@ -12,10 +12,11 @@ const employeeRoutes: NuxtPage[] = [
     file: '@/employees/pages/add.vue',
   },
   {
-    path: '/employees/edit/:id',
-    name: 'EditEmployee',
+    path: '/employees/:id',
+    name: 'EmployeeDetails',
     file: '@/employees/pages/[id].vue',
   }
+  
 ]
 
 export default employeeRoutes
