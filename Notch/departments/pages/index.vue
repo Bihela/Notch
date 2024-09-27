@@ -4,7 +4,7 @@
     <!-- Add New Department Button -->
     <NuxtLink to="/departments/add" class="add-button">Add New Department</NuxtLink>
 
-    <!-- Department Table -->
+    <!-- Department List Component -->
     <DepartmentList />
   </div>
 </template>

@@ -1,18 +1,24 @@
 <template>
   <div>
     <h1>Department Details</h1>
-    <DepartmentDetails v-if="department" :department="department" />
+    <!-- Show the department details in a dialog -->
+    <DepartmentDialog 
+      :show="true" 
+      :department="department" 
+      @close="() => router.push('/departments')" 
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import DepartmentDetails from '~/departments/components/DepartmentDetails.vue'
+import { useRoute, useRouter } from 'vue-router'
+import DepartmentDialog from '~/departments/components/DepartmentDialog.vue'
 
 const { $axios } = useNuxtApp()
-const route = useRoute()
 const department = ref(null)
+const route = useRoute()
+const router = useRouter()
 
 onMounted(async () => {
   try {

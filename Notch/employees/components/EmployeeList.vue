@@ -15,7 +15,8 @@
           <td>{{ employee.position }}</td>
           <td>{{ employee.departmentName }}</td>
           <td>
-            <NuxtLink :to="`/employees/${employee.id}`">View Details</NuxtLink>
+            <!-- Replaced NuxtLink with button to show details dialog -->
+            <button @click="showDetails(employee)">View Details</button>
           </td>
         </tr>
       </tbody>
@@ -24,12 +25,19 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   employees: {
     type: Array,
     required: true
   }
 })
+
+const emit = defineEmits(['show-details'])
+
+// Emit the selected employee to the parent component
+const showDetails = (employee) => {
+  emit('show-details', employee)
+}
 </script>
 
 <style scoped>
@@ -66,5 +74,18 @@ defineProps({
   .employee-table th, .employee-table td {
     padding: 10px 5px;
   }
+}
+
+button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 </style>

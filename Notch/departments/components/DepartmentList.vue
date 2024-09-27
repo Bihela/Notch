@@ -12,20 +12,33 @@
         <tr v-for="department in departments" :key="department.id">
           <td>{{ department.name }}</td>
           <td>
-            <NuxtLink :to="`/departments/${department.id}`">View Details</NuxtLink>
+            <!-- Button to show details dialog -->
+            <button @click="showDepartmentDetails(department)">View Details</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Department Dialog Component -->
+    <DepartmentDialog
+      v-if="selectedDepartment"
+      :show="dialogVisible"
+      :department="selectedDepartment"
+      @close="dialogVisible = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import DepartmentDialog from '~/departments/components/DepartmentDialog.vue'
 const { $axios } = useNuxtApp()
 
-const departments = ref([])
+const departments = ref([]) // Store the list of departments
+const dialogVisible = ref(false) // State to control dialog visibility
+const selectedDepartment = ref(null) // Currently selected department
 
+// Fetch departments from the API
 onMounted(async () => {
   try {
     const response = await $axios.get('/api/Department')
@@ -37,6 +50,12 @@ onMounted(async () => {
     console.error('Failed to fetch departments:', error)
   }
 })
+
+// Show the department details in the dialog
+const showDepartmentDetails = (department) => {
+  selectedDepartment.value = department
+  dialogVisible.value = true
+}
 </script>
 
 <style scoped>
