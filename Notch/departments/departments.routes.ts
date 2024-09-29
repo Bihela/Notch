@@ -7,11 +7,6 @@ const departmentRoutes: NuxtPage[] = [
     file: '@/departments/pages/index.vue',
   },
   {
-    path: '/departments/add',
-    name: 'AddDepartment',
-    file: '@/departments/pages/add.vue',
-  },
-  {
     path: '/departments/:id',
     name: 'EditDepartment',
     file: '@/departments/pages/[id].vue',

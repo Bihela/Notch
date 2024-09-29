@@ -7,11 +7,10 @@ const employeeRoutes: NuxtPage[] = [
     file: '@/employees/pages/index.vue',
   },
   {
-    path: '/employees/add',
-    name: 'AddEmployee',
-    file: '@/employees/pages/add.vue',
+    path: '/employees/:id',
+    name: 'EditEmployee',
+    file: '@/employees/pages/[id].vue',
   }
-  // Removed EmployeeDetails route as it is no longer needed
 ]
 
 export default employeeRoutes

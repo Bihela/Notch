@@ -2,10 +2,23 @@
   <div>
     <h1>Employee List</h1>
     <!-- Add New Employee Button -->
-    <NuxtLink to="/employees/add" class="add-button">Add New Employee</NuxtLink>
+    <button @click="showDialog = true" class="add-button">Add New Employee</button>
 
-    <!-- Display Employee List and listen for show-details event -->
+    <!-- Display Employee List -->
     <EmployeeList :employees="employees" @show-details="showEmployeeDetails" />
+
+    <!-- Employee Dialog for adding new employee -->
+    <Dialog v-if="showDialog" @close="showDialog = false">
+      <template #header>
+        <h3>Add New Employee</h3>
+      </template>
+      <template #body>
+        <EmployeeForm :onSubmit="fetchEmployees" />
+      </template>
+      <template #footer>
+        <button @click="showDialog = false">Close</button>
+      </template>
+    </Dialog>
 
     <!-- Employee Dialog for displaying details -->
     <EmployeeDialog
@@ -21,12 +34,15 @@
 import { ref, onMounted } from 'vue'
 import EmployeeList from '~/employees/components/EmployeeList.vue'
 import EmployeeDialog from '~/employees/components/EmployeeDialog.vue'
+import EmployeeForm from '~/employees/components/EmployeeForm.vue' // Ensure this import is present
+import Dialog from '~/employees/components/Dialog.vue' // Check if this path is correct
 
 const { $axios } = useNuxtApp()
 
 const employees = ref([]) // Store the list of employees
-const dialogVisible = ref(false) // State to control dialog visibility
+const dialogVisible = ref(false) // State to control employee detail dialog visibility
 const selectedEmployee = ref(null) // Currently selected employee
+const showDialog = ref(false) // State to control add employee dialog visibility
 
 // Fetch employees from the API
 const fetchEmployees = async () => {

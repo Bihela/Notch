@@ -2,38 +2,63 @@
   <div class="department-container">
     <h1>Department List</h1>
     <!-- Add New Department Button -->
-    <NuxtLink to="/departments/add" class="add-button">Add New Department</NuxtLink>
+    <button @click="showDialog = true" class="add-button">Add New Department</button>
 
     <!-- Department List Component -->
     <DepartmentList />
+
+    <!-- Add Department Dialog -->
+    <Dialog v-if="showDialog" @close="showDialog = false">
+      <template #header>
+        <h3>Add New Department</h3>
+      </template>
+      <template #body>
+        <DepartmentForm :onSubmit="handleAddDepartment" />
+      </template>
+      <template #footer>
+        <button @click="showDialog = false">Close</button>
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import DepartmentList from '~/departments/components/DepartmentList.vue'
+import DepartmentForm from '~/departments/components/DepartmentForm.vue'
+import Dialog from '~/departments/components/Dialog.vue' // Import the Dialog component
+
+const showDialog = ref(false)
+
+const handleAddDepartment = async (department) => {
+  try {
+    const { $axios } = useNuxtApp()
+    await $axios.post('/api/Department', department)
+    showDialog.value = false
+    // Optionally refresh the department list if necessary
+  } catch (error) {
+    console.error('Failed to add department:', error)
+  }
+}
 </script>
 
 <style scoped>
-/* Container styling */
 .department-container {
-  margin: 20px; /* Add spacing around the container */
+  margin: 20px;
 }
 
-/* Button styling */
 .add-button {
-  display: inline-block; /* Make the button inline */
+  display: inline-block;
   background-color: #28a745;
   color: white;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
-  margin-bottom: 20px; /* Add space below the button to separate it from the table */
-  text-decoration: none; /* Remove underline from the link */
+  margin-bottom: 20px;
+  text-decoration: none;
 }
 
 .add-button:hover {
   background-color: #218838;
 }
-
-/* Additional styles can go here */
 </style>

@@ -1,10 +1,6 @@
 <template>
   <form @submit.prevent="submitForm">
     <div>
-      <label for="id">ID:</label>
-      <input v-model="employee.id" type="number" id="id" />
-    </div>
-    <div>
       <label for="name">Name:</label>
       <input v-model="employee.name" type="text" id="name" required />
     </div>
@@ -33,13 +29,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-const { $axios } = useNuxtApp()
-const router = useRouter()
+import { ref, defineProps } from 'vue'
+
+const props = defineProps({
+  onSubmit: {
+    type: Function,
+    required: true
+  }
+})
 
 const employee = ref({
-  id: null,
   name: '',
   position: '',
   departmentID: null,
@@ -50,13 +49,10 @@ const employee = ref({
 
 const submitForm = async () => {
   try {
-    const url = '/api/employee'
-
-    // Submitting the employee data to the API
-    const response = await $axios.post(url, employee.value)
-    
-    // After successful submission, redirect to the employee list page
-    router.push('/employees')
+    const { $axios } = useNuxtApp()
+    await $axios.post('/api/employee', employee.value)
+    props.onSubmit() // Call the parent method to handle post-submission logic
+    employee.value = { name: '', position: '', departmentID: null, dateOfJoining: '', emailAddress: '', phoneNumber: '' } // Reset form
   } catch (error) {
     console.error('Failed to submit employee:', error)
   }

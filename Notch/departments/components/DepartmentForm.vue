@@ -13,10 +13,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-const { $axios } = useNuxtApp()
-const router = useRouter()
+import { ref, defineProps } from 'vue'
+
+const props = defineProps({
+  onSubmit: {
+    type: Function,
+    required: true
+  }
+})
 
 const department = ref({
   departmentName: '',
@@ -25,8 +29,8 @@ const department = ref({
 
 const submitForm = async () => {
   try {
-    await $axios.post('/api/Department', department.value)
-    router.push('/departments')
+    await props.onSubmit(department.value)
+    department.value = { departmentName: '', managerId: null } // Reset form after successful submission
   } catch (error) {
     console.error('Failed to submit department:', error)
   }
