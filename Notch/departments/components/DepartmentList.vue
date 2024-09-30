@@ -30,25 +30,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import DepartmentDialog from '~/departments/components/DepartmentDialog.vue'
 const { $axios } = useNuxtApp()
 
-const departments = ref([]) // Store the list of departments
-const dialogVisible = ref(false) // State to control dialog visibility
-const selectedDepartment = ref(null) // Currently selected department
-
-// Fetch departments from the API
-onMounted(async () => {
-  try {
-    const response = await $axios.get('/api/Department')
-    departments.value = response.data.map(department => ({
-      id: department.departmentId,
-      name: department.departmentName
-    }))
-  } catch (error) {
-    console.error('Failed to fetch departments:', error)
+// Props for departments passed from parent
+const props = defineProps({
+  departments: {
+    type: Array,
+    required: true
   }
+})
+
+// Internal state for managing selected department and dialog visibility
+const dialogVisible = ref(false)
+const selectedDepartment = ref(null)
+
+// Watch the departments passed as props to ensure they are correctly received
+watch(() => props.departments, (newDepartments) => {
+  console.log('Departments passed to DepartmentList:', newDepartments) // Debug: Log departments passed to the list
 })
 
 // Show the department details in the dialog

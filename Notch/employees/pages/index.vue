@@ -1,11 +1,18 @@
 <template>
   <div>
     <h1>Employee List</h1>
+
+    <!-- Employee Search Component -->
+    <EmployeeSearch @update-search="setSearchQuery" />
+
     <!-- Add New Employee Button -->
     <button @click="showDialog = true" class="add-button">Add New Employee</button>
 
     <!-- Display Employee List -->
-    <EmployeeList :employees="employees" @show-details="showEmployeeDetails" />
+    <EmployeeList
+      :employees="filteredEmployees"
+      @show-details="showEmployeeDetails"
+    />
 
     <!-- Employee Dialog for adding new employee -->
     <Dialog v-if="showDialog" @close="showDialog = false">
@@ -31,18 +38,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import EmployeeList from '~/employees/components/EmployeeList.vue'
+import EmployeeSearch from '~/employees/components/EmployeeSearch.vue'
 import EmployeeDialog from '~/employees/components/EmployeeDialog.vue'
-import EmployeeForm from '~/employees/components/EmployeeForm.vue' // Ensure this import is present
-import Dialog from '~/employees/components/Dialog.vue' // Check if this path is correct
+import EmployeeForm from '~/employees/components/EmployeeForm.vue'
+import Dialog from '~/employees/components/Dialog.vue'
 
 const { $axios } = useNuxtApp()
 
 const employees = ref([]) // Store the list of employees
-const dialogVisible = ref(false) // State to control employee detail dialog visibility
-const selectedEmployee = ref(null) // Currently selected employee
-const showDialog = ref(false) // State to control add employee dialog visibility
+const dialogVisible = ref(false)
+const selectedEmployee = ref(null)
+const showDialog = ref(false)
+const searchQuery = ref('') // State for search query
 
 // Fetch employees from the API
 const fetchEmployees = async () => {
@@ -54,11 +63,26 @@ const fetchEmployees = async () => {
   }
 }
 
-// Show the employee details in the dialog
+// Show employee details in the dialog
 const showEmployeeDetails = (employee) => {
   selectedEmployee.value = employee
   dialogVisible.value = true
 }
+
+// Update search query from child component
+const setSearchQuery = (query) => {
+  searchQuery.value = query
+}
+
+// Filtered employees based on the search query
+const filteredEmployees = computed(() => {
+  const lowerCaseQuery = searchQuery.value.toLowerCase()
+  return employees.value.filter(employee =>
+    employee.name.toLowerCase().includes(lowerCaseQuery) ||
+    employee.position.toLowerCase().includes(lowerCaseQuery) ||
+    employee.departmentName.toLowerCase().includes(lowerCaseQuery)
+  )
+})
 
 onMounted(() => {
   fetchEmployees()
@@ -72,7 +96,6 @@ onMounted(() => {
   padding: 10px 20px;
   background-color: #28a745;
   color: white;
-  text-decoration: none;
   border-radius: 5px;
 }
 
