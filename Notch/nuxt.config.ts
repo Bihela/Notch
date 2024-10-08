@@ -19,6 +19,11 @@ export default defineNuxtConfig({
       const employeeRouteFiles = glob.sync('./employees/**/*.routes.ts')
       const employeeRoutes = employeeRouteFiles.map(routeFile => require(path.join(path.resolve(), routeFile)))
       pages.push(...employeeRoutes.flat(1))
+
+      // Add attendance routes
+      const attendanceRouteFiles = glob.sync('./attendance/**/*.routes.ts')
+      const attendanceRoutes = attendanceRouteFiles.map(routeFile => require(path.join(path.resolve(), routeFile)))
+      pages.push(...attendanceRoutes.flat(1))
     }
   }
 })

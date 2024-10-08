@@ -8,7 +8,6 @@
       <NuxtLink to="/departments">Departments</NuxtLink> |
       <NuxtLink to="/attendance">Attendance</NuxtLink> |
       <NuxtLink to="/salaries">Salaries</NuxtLink> |
-      <NuxtLink to="/job-performance">Job Performance</NuxtLink>
       </nav>
     </header>
 
