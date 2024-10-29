@@ -7,7 +7,7 @@
       <NuxtLink to="/employees">Employees</NuxtLink> |
       <NuxtLink to="/departments">Departments</NuxtLink> |
       <NuxtLink to="/attendance">Attendance</NuxtLink> |
-      <NuxtLink to="/salaries">Salaries</NuxtLink> |
+      <NuxtLink to="/leaverequests">Leave Requests</NuxtLink> |
       </nav>
     </header>
 
@@ -16,7 +16,7 @@
 
     <!-- Global Footer -->
     <footer>
-      <p>&copy; 2024 Employee Management System</p>
+      <p>&copy; 2024 Notch</p>
     </footer>
   </div>
 </template>

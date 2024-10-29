@@ -1,6 +1,5 @@
 <template>
   <div class="attendance-list">
-    <h2>Attendance List</h2>
 
     <!-- Date Picker to select a different date -->
     <div class="date-picker">
