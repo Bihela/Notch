@@ -1,6 +1,7 @@
 <template>
   <div class="attendance-list">
-
+    <SearchBar @search="filterAttendance" />
+    
     <!-- Date Picker to select a different date -->
     <div class="date-picker">
       <label for="date">Select Date:</label>
@@ -17,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="attendance in attendanceList" :key="attendance.employeeId">
+        <tr v-for="attendance in filteredAttendanceList" :key="attendance.employeeId">
           <td>{{ attendance.employeeId }}</td>
           <td>{{ attendance.name }}</td>
           <td>{{ attendance.department }}</td>
@@ -28,7 +29,6 @@
                 <option value="Leave">Leave</option>
                 <option value="Need to Attend">Need to Attend</option>
               </select>
-              <!-- Show 'Late' tag if the employee is marked as late -->
               <span v-if="attendance.isLate" class="late-tag">Late</span>
             </div>
           </td>
@@ -39,12 +39,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import SearchBar from '../components/SearchBar.vue' // Adjust the path as necessary
 const { $axios } = useNuxtApp()
 
 const attendanceList = ref([])
-
-// Initialize the date with today's date
+const searchQuery = ref('')
 const selectedDate = ref(new Date().toISOString().substr(0, 10))
 
 const fetchAttendance = async () => {
@@ -78,6 +78,21 @@ const updateAttendanceStatus = async (attendance) => {
   } catch (error) {
     console.error('Failed to update attendance status:', error)
   }
+}
+
+const filteredAttendanceList = computed(() => {
+  if (!searchQuery.value) {
+    return attendanceList.value
+  }
+  const lowerCaseQuery = searchQuery.value.toLowerCase()
+  return attendanceList.value.filter(attendance => 
+    attendance.employeeId.toString().includes(lowerCaseQuery) ||
+    attendance.name.toLowerCase().includes(lowerCaseQuery)
+  )
+})
+
+const filterAttendance = (query) => {
+  searchQuery.value = query
 }
 
 onMounted(() => {
