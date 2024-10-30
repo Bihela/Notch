@@ -1,0 +1,40 @@
+<template>
+  <div>
+    <!-- Global Header or Navigation -->
+    <header>
+      <nav>
+      <NuxtLink to="/">Home</NuxtLink> |
+      <NuxtLink to="/employees">Employees</NuxtLink> |
+      <NuxtLink to="/departments">Departments</NuxtLink> |
+      <NuxtLink to="/attendance">Attendance</NuxtLink> |
+      <NuxtLink to="/leaverequests">Leave Requests</NuxtLink> |
+      </nav>
+    </header>
+
+    <!-- Page Content -->
+    <NuxtPage />
+
+    <!-- Global Footer -->
+    <footer>
+      <p>&copy; 2024 Notch</p>
+    </footer>
+  </div>
+</template>
+
+<style>
+/* Add some basic styles */
+header, footer {
+  background-color: #333;
+  color: white;
+  padding: 1em;
+}
+
+nav a {
+  color: white;
+  margin-right: 10px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+</style>
