@@ -4,14 +4,16 @@
       <h1>Leave Requests</h1>
     </div>
     <button class="request-leave-btn" @click="openLeaveRequestDialog">Request Leave</button>
-    
+
+    <SearchBar @search="handleSearch" />
+
     <LeaveRequestDialog
       :isOpen="isDialogOpen"
       :onClose="closeLeaveRequestDialog"
       @leaveSubmitted="handleLeaveSubmitted"
     />
-    <LeaveRequestsList 
-      :leaveRequests="leaveRequests"
+    <LeaveRequestsList
+      :leaveRequests="filteredLeaveRequests"
       :activeFilter="activeFilter"
       @approve="approveLeave"
       @reject="rejectLeave"
@@ -21,14 +23,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import LeaveRequestDialog from '~/attendance/components/LeaveRequestDialog.vue'
 import LeaveRequestsList from '~/leaverequests/components/LeaveRequestsList.vue'
+import SearchBar from '~/leaverequests/components/SearchBar.vue'
 const { $axios } = useNuxtApp()
 
 const isDialogOpen = ref(false)
 const leaveRequests = ref([])
 const activeFilter = ref('Pending')
+const searchQuery = ref('')
 
 const openLeaveRequestDialog = () => {
   isDialogOpen.value = true
@@ -53,46 +57,32 @@ const fetchLeaveRequests = async (filter = 'Pending') => {
   }
 }
 
-// Approve leave request
-const approveLeave = async (id) => {
-  try {
-    await $axios.post(`/api/LeaveRequest/ApproveLeave/${id}`)
-    alert('Leave request approved successfully!')
-    fetchLeaveRequests(activeFilter.value) // Refresh the list after approving
-  } catch (error) {
-    console.error('Error approving leave request:', error)
-    alert('Failed to approve leave request. Please try again.')
-  }
+const handleSearch = (query) => {
+  searchQuery.value = query
 }
 
-// Reject leave request
-const rejectLeave = async (id) => {
-  try {
-    await $axios.post(`/api/LeaveRequest/RejectLeave/${id}`)
-    alert('Leave request rejected successfully!')
-    fetchLeaveRequests(activeFilter.value) // Refresh the list after rejecting
-  } catch (error) {
-    console.error('Error rejecting leave request:', error)
-    alert('Failed to reject leave request. Please try again.')
-  }
-}
+// Filter leave requests based on search query and active filter
+const filteredLeaveRequests = computed(() => {
+  return leaveRequests.value.filter(request =>
+    (request.employeeId.toString().includes(searchQuery.value) ||
+      request.employeeName.toLowerCase().includes(searchQuery.value.toLowerCase()))
+  )
+})
 
-// Fetch leave requests on component mount
 onMounted(() => {
   fetchLeaveRequests()
 })
 
-// Handle event when a leave is successfully submitted
 const handleLeaveSubmitted = () => {
-  fetchLeaveRequests(activeFilter.value) // Refresh the leave requests list
-  closeLeaveRequestDialog() // Close the dialog
+  fetchLeaveRequests(activeFilter.value)
+  closeLeaveRequestDialog()
 }
 
-// Handle filter change
 const changeFilter = (filter) => {
   fetchLeaveRequests(filter)
 }
 </script>
+
 
 <style scoped>
 .leave-requests-container {

@@ -30,16 +30,16 @@
   
   <style scoped>
   .search-bar-container {
-    margin-bottom: 20px; /* Spacing below the search bar */
+    margin-bottom: 20px; 
   }
   
   .search-bar {
-    padding: 10px; /* Inner padding for the input */
-    width: 100%; /* Full width */
-    max-width: 400px; /* Maximum width */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid #ccc; /* Light grey border */
-    font-size: 16px; /* Font size */
+    padding: 10px; 
+    width: 100%; 
+    max-width: 400px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    font-size: 16px; 
   }
   </style>
   
